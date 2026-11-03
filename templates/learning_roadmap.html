@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Roadmap - StudyMate AI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .roadmap-timeline {
+            position: relative;
+            padding-left: 45px;
+        }
+        .roadmap-timeline::before {
+            content: '';
+            position: absolute;
+            left: 18px;
+            top: 20px;
+            bottom: 20px;
+            width: 3px;
+            background: linear-gradient(180deg, #ff1a40 0%, #dc2626 50%, rgba(255, 30, 60, 0.2) 100%);
+        }
+        .roadmap-node {
+            position: relative;
+            margin-bottom: 35px;
+        }
+        .roadmap-marker {
+            position: absolute;
+            left: -45px;
+            top: 4px;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 16px;
+            box-shadow: 0 0 15px rgba(255, 26, 64, 0.5);
+            background: #0d0407;
+            border: 2px solid #ff1a40;
+            color: #ff3355;
+            z-index: 2;
+        }
+        .roadmap-marker.completed {
+            background: #ff1a40;
+            color: white;
+            box-shadow: 0 0 20px #ff1a40;
+        }
+    </style>
+</head>
+<body class="dashboard-body">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <h2 class="logo">StudyMate AI</h2>
+        <ul class="sidebar-menu">
+            <li><a href="/dashboard"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+            <li><a href="/tutor"><i class="fa-solid fa-graduation-cap"></i> Difficult Topic Tutor <span class="badge bg-danger ms-auto" style="font-size:10px;">AI</span></a></li>
+            <li><a href="/doubt-solver"><i class="fa-solid fa-question"></i> AI Doubt Solver</a></li>
+            <li><a href="/learning-roadmap" class="active"><i class="fa-solid fa-map-location-dot"></i> Learning Roadmap</a></li>
+            <li><a href="/analytics"><i class="fa-solid fa-chart-line"></i> Progress & Analytics</a></li>
+            <li><a href="/quiz"><i class="fa-solid fa-brain"></i> Quiz & Practice</a></li>
+            <li><a href="/gk-zone"><i class="fa-solid fa-globe"></i> GK Zone</a></li>
+            <li><a href="/career-roadmap"><i class="fa-solid fa-briefcase"></i> Career Roadmap</a></li>
+            <li><a href="/profile"><i class="fa-solid fa-user"></i> Student Profile</a></li>
+            <li><a href="/settings"><i class="fa-solid fa-gear"></i> Settings</a></li>
+            <li><a href="/logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+        </ul>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        <!-- TOPBAR -->
+        <div class="topbar d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <div>
+                <a href="/dashboard" class="text-decoration-none text-muted small"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
+                <h3 class="mb-0 mt-1">Adaptive Learning Roadmap 🗺️</h3>
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <span class="badge bg-danger px-3 py-2 fw-semibold">Syllabus: {{ syllabus_percent }}% Complete</span>
+                <button id="themeToggleBtn" onclick="toggleDarkMode()" class="btn btn-dark theme-toggle-btn">☀️ Light Mode</button>
+            </div>
+        </div>
+
+        <!-- ROADMAP HEADER STATS -->
+        <div class="row g-4 mb-4">
+            <div class="col-md-4">
+                <div class="card p-3 d-flex flex-row align-items-center gap-3">
+                    <div class="rounded-circle p-3 d-flex align-items-center justify-content-center" style="background: rgba(255, 26, 64, 0.15); width: 60px; height: 60px;">
+                        <i class="fa-solid fa-flag-checkered text-danger fs-3"></i>
+                    </div>
+                    <div>
+                        <h4 class="mb-0 fw-bold">{{ stats.completed_units if stats else 0 }} / {{ stats.total_units if stats else (roadmap_items|length) }}</h4>
+                        <span class="text-muted small">Milestone Modules Completed (MySQL DB)</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card p-3 d-flex flex-row align-items-center gap-3">
+                    <div class="rounded-circle p-3 d-flex align-items-center justify-content-center" style="background: rgba(255, 26, 64, 0.15); width: 60px; height: 60px;">
+                        <i class="fa-solid fa-hourglass-half text-danger fs-3"></i>
+                    </div>
+                    <div>
+                        <h4 class="mb-0 fw-bold">{% if roadmap_items %}{{ (stats.total_units - stats.completed_units) if stats else (roadmap_items|length) }} Modules{% else %}0 Modules{% endif %}</h4>
+                        <span class="text-muted small">{% if roadmap_items %}Remaining to Target Mastery{% else %}Enter topic below to start{% endif %}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card p-3 d-flex flex-row align-items-center gap-3">
+                    <div class="rounded-circle p-3 d-flex align-items-center justify-content-center" style="background: rgba(255, 26, 64, 0.15); width: 60px; height: 60px;">
+                        <i class="fa-solid fa-calendar-check text-danger fs-3"></i>
+                    </div>
+                    <div>
+                        <h4 class="mb-0 fw-bold">{% if roadmap_items %}Active{% else %}Ready{% endif %}</h4>
+                        <span class="text-muted small">{% if roadmap_items %}Live Syllabus Progression{% else %}Awaiting Student Topic{% endif %}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if not roadmap_items %}
+        <!-- STEP 1: STUDENT ENTERS TOPIC FIRST -->
+        <div class="card p-5 text-center my-4" style="border: 2px dashed rgba(255,40,60,0.5);">
+            <div class="mx-auto rounded-circle d-flex align-items-center justify-content-center mb-3" style="width: 76px; height: 76px; background: rgba(255,26,64,0.15);">
+                <i class="fa-solid fa-map-location-dot text-danger fs-1"></i>
+            </div>
+            <h3 class="fw-bold mb-2">Enter Your Subject / Topic to Generate Roadmap</h3>
+            <p class="text-muted mx-auto mb-4" style="max-width: 580px;">
+                Tell StudyMate AI what you need to study. A customized multi-phase curriculum will be architected and saved directly to your MySQL database.
+            </p>
+
+            <form action="/learning-roadmap/generate" method="POST" class="mx-auto text-start" style="max-width: 580px;" onsubmit="this.querySelector('button[type=submit]').innerHTML='<i class=\'fa-solid fa-spinner fa-spin me-2\'></i>Generating Custom Roadmap...';">
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Subject / Course / Topic Name <span class="text-danger">*</span></label>
+                    <input type="text" name="topic" class="form-control py-2" placeholder="e.g. Python Programming, Machine Learning, Calculus, Digital Electronics, DBMS..." required autofocus>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">Target Level / Preparation Style</label>
+                    <select name="level" class="form-select py-2">
+                        <option value="Beginner to Advanced Mastery">Beginner to Advanced Mastery</option>
+                        <option value="Semester / University Examination Prep">Semester / University Examination Prep</option>
+                        <option value="Competitive Exam Crash Course">Competitive Exam Crash Course</option>
+                        <option value="Hands-on Project & Industry Skill">Hands-on Project & Industry Skill</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-danger w-100 py-3 fw-bold fs-6">
+                    <i class="fa-solid fa-wand-magic-sparkles me-2"></i>Generate & Save Roadmap to Database
+                </button>
+            </form>
+        </div>
+
+        {% else %}
+
+        <!-- STEP 2: DISPLAY STUDENT'S CUSTOM ROADMAP -->
+        <div class="card p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+                <div>
+                    <span class="badge bg-danger mb-1"><i class="fa-solid fa-book-bookmark me-1"></i>Active Topic: {{ stats.smart_revision_topic if stats and stats.smart_revision_topic else 'Custom Curriculum' }}</span>
+                    <h4 class="fw-bold mb-0"><i class="fa-solid fa-route text-danger me-2"></i>Structured Academic Progression Path (MySQL Synced)</h4>
+                </div>
+                <form action="/learning-roadmap/reset" method="POST" style="display:inline;" onsubmit="return confirm('Clear this roadmap and choose a new topic?');">
+                    <button type="submit" class="btn btn-sm btn-outline-danger"><i class="fa-solid fa-plus me-1"></i>Enter Different Topic</button>
+                </form>
+            </div>
+
+            <div class="roadmap-timeline">
+                {% for item in roadmap_items %}
+                <div class="roadmap-node">
+                    <div class="roadmap-marker {% if item.status == 'completed' %}completed{% endif %}" {% if item.status == 'in_progress' %}style="border-color: #ff3355; animation: pulseGlow 2s infinite;"{% endif %}>
+                        {% if item.status == 'completed' %}
+                            <i class="fa-solid fa-check"></i>
+                        {% elif item.status == 'in_progress' %}
+                            <i class="fa-solid fa-play"></i>
+                        {% else %}
+                            {{ item.phase_number }}
+                        {% endif %}
+                    </div>
+                    <div class="card p-3 {% if item.status == 'in_progress' %}border-danger{% elif item.status == 'upcoming' %}opacity-75{% endif %}">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                {% if item.status == 'completed' %}
+                                    <span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-50 mb-1">{{ item.phase_name }}</span>
+                                {% elif item.status == 'in_progress' %}
+                                    <span class="badge bg-danger mb-1">{{ item.phase_name }} (Active Target)</span>
+                                {% else %}
+                                    <span class="badge bg-secondary mb-1">{{ item.phase_name }}</span>
+                                {% endif %}
+                                <h5 class="fw-bold mb-1">{{ item.topic_title }}</h5>
+                                <p class="text-muted small mb-2">{{ item.description }}</p>
+                                
+                                {% if item.status == 'completed' %}
+                                    <div class="d-flex align-items-center flex-wrap gap-2 mt-3">
+                                        <span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-50 px-3 py-2 fw-bold">
+                                            <i class="fa-solid fa-circle-check me-1"></i> Completed
+                                        </span>
+                                        <form action="/learning-roadmap/update" method="POST" style="display:inline;">
+                                            <input type="hidden" name="id" value="{{ item.id }}">
+                                            <input type="hidden" name="action" value="incomplete">
+                                            <button type="submit" class="btn btn-sm btn-outline-secondary" title="Revert to In Progress">
+                                                <i class="fa-solid fa-rotate-left me-1"></i> Mark as Not Complete
+                                            </button>
+                                        </form>
+                                    </div>
+                                {% elif item.status == 'in_progress' %}
+                                    <div class="progress mb-3 mt-2" style="height: 8px; background: rgba(255,255,255,0.08);">
+                                        <div class="progress-bar bg-danger progress-bar-striped progress-bar-animated" style="width: {{ item.progress_percent if item.progress_percent else 35 }}%;"></div>
+                                    </div>
+                                    <div class="d-flex align-items-center flex-wrap gap-2 mt-2">
+                                        <a href="/tutor?topic={{ item.topic_title | urlencode }}" class="btn btn-sm btn-primary px-3">
+                                            <i class="fa-solid fa-graduation-cap me-1"></i> Launch Topic Tutor
+                                        </a>
+                                        <form action="/learning-roadmap/update" method="POST" style="display:inline;">
+                                            <input type="hidden" name="id" value="{{ item.id }}">
+                                            <input type="hidden" name="action" value="complete">
+                                            <button type="submit" class="btn btn-sm btn-success px-3 fw-bold">
+                                                <i class="fa-solid fa-circle-check me-1"></i> Completed & Move to Next <i class="fa-solid fa-arrow-right ms-1"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                {% else %}
+                                    <div class="d-flex align-items-center gap-2 mt-3">
+                                        <form action="/learning-roadmap/update" method="POST" style="display:inline;">
+                                            <input type="hidden" name="id" value="{{ item.id }}">
+                                            <input type="hidden" name="action" value="incomplete">
+                                            <button type="submit" class="btn btn-sm btn-outline-secondary">
+                                                <i class="fa-solid fa-play me-1"></i> Start This Phase
+                                            </button>
+                                        </form>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</body>
+</html>

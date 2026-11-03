@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - StudyMate AI Platform</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+        /* Pro AI Access Sidebar Card */
+        .pro-access-card {
+            background: linear-gradient(135deg, rgba(37, 99, 235, 0.25) 0%, rgba(30, 58, 138, 0.45) 100%);
+            border: 1px solid rgba(37, 99, 235, 0.4);
+            border-radius: 14px;
+            padding: 14px;
+            margin: 20px 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Top Header Navigation Strip */
+        .header-top-strip {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            margin-bottom: 25px;
+        }
+
+        .dark-mode .header-top-strip {
+            background: #2a2a2a !important;
+            color: white !important;
+        }
+
+        .level-pill {
+            background: #f1f5f9;
+            border-radius: 20px;
+            padding: 6px 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #334155;
+            font-weight: 600;
+        }
+
+        .dark-mode .level-pill {
+            background: #1e1e1e;
+            color: #f1f5f9;
+        }
+
+        .level-xp-bar {
+            width: 70px;
+            height: 6px;
+            background: #cbd5e1;
+            border-radius: 10px;
+            overflow: hidden;
+            display: inline-block;
+        }
+
+        .level-xp-fill {
+            width: 65%;
+            height: 100%;
+            background: linear-gradient(90deg, #6366f1, #8b5cf6);
+            border-radius: 10px;
+        }
+
+        .streak-pill {
+            background: #fef3c7;
+            color: #d97706;
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 13px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .dark-mode .streak-pill {
+            background: rgba(245, 158, 11, 0.2);
+            color: #fbbf24;
+        }
+
+        .avatar-circle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #3b82f6);
+            color: white;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        /* Hero Welcome Banner */
+        .welcome-hero-card {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #db2777 100%);
+            border-radius: 22px;
+            padding: 30px 35px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 12px 35px rgba(79, 70, 229, 0.3);
+            margin-bottom: 25px;
+        }
+
+        .smart-revision-alert {
+            background: rgba(0, 0, 0, 0.22);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 12px;
+            padding: 12px 18px;
+            margin-top: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        /* KPI Stat Cards */
+        .kpi-card {
+            background: white;
+            border-radius: 20px;
+            padding: 24px 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+            transition: 0.3s;
+        }
+
+        .dark-mode .kpi-card {
+            background: #2a2a2a !important;
+            color: white !important;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .kpi-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 6px;
+        }
+
+        .kpi-label {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.7px;
+            color: #64748b;
+        }
+
+        .dark-mode .kpi-label {
+            color: #94a3b8;
+        }
+
+        /* Closed-Loop Flywheel */
+        .flywheel-container {
+            background: #0f172a;
+            border-radius: 22px;
+            padding: 24px 28px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+
+        .flywheel-strip {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(95px, 1fr));
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .flywheel-step {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            padding: 12px 6px;
+            text-align: center;
+            color: #f1f5f9;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .flywheel-step:hover {
+            background: rgba(99, 102, 241, 0.3);
+            border-color: #818cf8;
+            transform: translateY(-3px);
+            color: #ffffff;
+        }
+
+        .flywheel-step span {
+            font-size: 11px;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .flywheel-step i {
+            font-size: 16px;
+            color: #818cf8;
+        }
+    </style>
+</head>
+
+<body class="dashboard-body">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+
+        <h2 class="logo">
+            StudyMate AI
+        </h2>
+
+        <ul class="sidebar-menu">
+
+            <li>
+                <a href="/profile">
+                    <i class="fa-solid fa-user"></i>
+                    Student Profile
+                </a>
+            </li>
+
+            <li>
+                <a href="/dashboard">
+                    <i class="fa-solid fa-house"></i>
+                    Dashboard
+                </a>
+            </li>
+
+            <!-- NEW FEATURE: DIFFICULT TOPIC TUTOR [AI] -->
+            <li>
+                <a href="/tutor">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    Difficult Topic Tutor
+                    <span class="badge bg-danger ms-auto" style="font-size: 10px;">AI</span>
+                </a>
+            </li>
+
+            <!-- EXISTING FEATURE: DOUBT SOLVER -->
+            <li>
+                <a href="/doubt-solver">
+                    <i class="fa-solid fa-question"></i>
+                    AI Doubt Solver
+                    <span class="badge bg-primary ms-auto" style="font-size: 10px;">AI</span>
+                </a>
+            </li>
+
+            <!-- EXISTING FEATURE: QUIZ -->
+            <li>
+                <a href="/quiz">
+                    <i class="fa-solid fa-brain"></i>
+                    Quiz & Practice
+                </a>
+            </li>
+
+            <!-- EXISTING FEATURE: OCR -->
+            <li>
+                <a href="/ocr">
+                    <i class="fa-solid fa-crop-simple"></i>
+                    Notes Scanner
+                    <span class="badge bg-secondary ms-auto" style="font-size: 10px;">OCR</span>
+                </a>
+            </li>
+
+            <!-- NEW FEATURE: LEARNING ROADMAP -->
+            <li>
+                <a href="/learning-roadmap">
+                    <i class="fa-solid fa-map-location-dot"></i>
+                    Learning Roadmap
+                </a>
+            </li>
+
+            <!-- NEW FEATURE: PROGRESS & ANALYTICS -->
+            <li>
+                <a href="/analytics">
+                    <i class="fa-solid fa-chart-line"></i>
+                    Progress & Analytics
+                </a>
+            </li>
+
+            <!-- NEW FEATURE: GK ZONE -->
+            <li>
+                <a href="/gk-zone">
+                    <i class="fa-solid fa-globe"></i>
+                    GK Zone
+                </a>
+            </li>
+
+            <!-- NEW FEATURE: CAREER ROADMAP -->
+            <li>
+                <a href="/career-roadmap">
+                    <i class="fa-solid fa-briefcase"></i>
+                    Career Roadmap
+                </a>
+            </li>
+
+            <!-- NEW FEATURE: SETTINGS -->
+            <li>
+                <a href="/settings">
+                    <i class="fa-solid fa-gear"></i>
+                    Settings
+                </a>
+            </li>
+
+            <!-- EXISTING FEATURE: SUMMARIZER -->
+            <li>
+                <a href="/summarizer">
+                    <i class="fa-solid fa-file-lines"></i>
+                    Summarizer
+                </a>
+            </li>
+
+            <!-- EXISTING FEATURE: AUDIO -->
+            <li>
+                <a href="/audio">
+                    <i class="fa-solid fa-microphone"></i>
+                    Audio To Text
+                </a>
+            </li>
+
+            <!-- EXISTING FEATURE: PLANNER -->
+            <li>
+                <a href="/planner">
+                    <i class="fa-solid fa-calendar"></i>
+                    Study Planner
+                </a>
+            </li>
+
+            <!-- EXISTING FEATURE: REMINDERS -->
+            <li>
+                <a href="/reminders">
+                    <i class="fa-solid fa-bell"></i>
+                    Reminders
+                </a>
+            </li>
+
+            <!-- EXISTING FEATURE: NOTES / KNOWLEDGE BASE -->
+            <li>
+                <a href="/notes">
+                    <i class="fa-solid fa-book"></i>
+                    Knowledge Base
+                </a>
+            </li>
+
+            <!-- EXISTING FEATURE: CHATBOT -->
+            <li>
+                <a href="/chatbot">
+                    <i class="fa-solid fa-robot"></i>
+                    AI Chatbot
+                </a>
+            </li>
+
+            <!-- EXISTING FEATURE: PDF -->
+            <li>
+                <a href="/pdf-summary">
+                    <i class="fa-solid fa-file-pdf"></i>
+                    PDF Summarizer
+                </a>
+            </li>
+
+            <!-- EXISTING FEATURE: TIMETABLE -->
+            <li>
+                <a href="/timetable">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    AI Timetable
+                </a>
+            </li>
+
+            <!-- EXISTING FEATURE: RESUME -->
+            <li>
+                <a href="/resume">
+                    <i class="fa-solid fa-address-card"></i>
+                    Resume Builder
+                </a>
+            </li>
+
+            <li>
+                <a href="/logout">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Logout
+                </a>
+            </li>
+
+        </ul>
+
+        <!-- NEW FEATURE: PRO AI ACCESS CARD -->
+        <div class="pro-access-card">
+            <div class="d-flex align-items-center gap-2 mb-1">
+                <i class="fa-solid fa-wand-magic-sparkles text-info"></i>
+                <h6 class="fw-bold mb-0 text-white" style="font-size: 13px;">Pro AI Access</h6>
+            </div>
+            <p class="text-white-50 mb-2" style="font-size: 11px;">Unlimited Doubt Solving & Speech Transcripts.</p>
+            <span class="badge bg-primary" style="font-size: 10px;">ACTIVE PRO TIER</span>
+        </div>
+
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+
+        <!-- TOPBAR STRIP -->
+        <div class="header-top-strip">
+            <!-- RIGHT STATUS BADGES & CONTROLS -->
+            <div class="d-flex align-items-center gap-3 flex-wrap ms-auto">
+                <!-- LEVEL & XP BAR -->
+                <div class="level-pill">
+                    <i class="fa-solid fa-star text-warning"></i>
+                    <span>Level {{ stats.level if stats else 1 }}</span>
+                    <div class="level-xp-bar">
+                        <div class="level-xp-fill" style="width: {{ ((stats.xp if stats else 0) % 1000) / 10 }}%;"></div>
+                    </div>
+                </div>
+
+                <!-- STREAK -->
+                <div class="streak-pill">
+                    <i class="fa-solid fa-fire"></i>
+                    <span>{{ stats.streak_days if stats else 1 }} Day{% if stats and stats.streak_days > 1 %}s{% endif %}</span>
+                </div>
+
+                <!-- PROFILE AVATAR -->
+                <a href="/profile" class="avatar-circle" title="Student Profile">
+                    {{ name[0] | upper }}
+                </a>
+
+                <!-- LOGOUT -->
+                <a href="/logout" class="btn btn-sm btn-outline-danger" title="Logout">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                </a>
+
+                <!-- DARK MODE TOGGLE -->
+                <button id="themeToggleBtn" onclick="toggleDarkMode()" class="btn btn-sm btn-dark theme-toggle-btn">
+                    🌙 Mode
+                </button>
+            </div>
+        </div>
+
+        <!-- ============================================================== -->
+        <!-- STUDENT VIEW                                                   -->
+        <!-- ============================================================== -->
+        <div id="studentView">
+
+            <!-- HERO BANNER (FROM SCREENSHOT) -->
+            <div class="welcome-hero-card">
+                <span class="badge bg-black bg-opacity-25 text-white border border-white border-opacity-25 rounded-pill px-3 py-1 mb-3">
+                    🔥 {{ stats.streak_days if stats else 1 }} Day Study Streak Active!
+                </span>
+                <h1 class="display-5 fw-bold mb-2">
+                    Welcome, {{ name }} 👋
+                </h1>
+                <p class="mb-0 fs-5 opacity-90">
+                    You're making great progress today! Here is your real-time academic overview.
+                </p>
+
+                <!-- SMART REVISION ALERT -->
+                <div class="smart-revision-alert">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="fa-solid fa-wand-magic-sparkles text-warning fs-5"></i>
+                        {% if stats and stats.smart_revision_topic %}
+                        <span class="fw-semibold">Smart Revision Alert: Revise {{ stats.smart_revision_topic }} today.</span>
+                        {% else %}
+                        <span class="fw-semibold">Ready to start learning! Complete a study module or quiz to activate smart revisions.</span>
+                        {% endif %}
+                    </div>
+                    <a href="{% if stats and stats.smart_revision_topic %}/tutor{% else %}/learning-roadmap{% endif %}" class="btn btn-sm btn-light fw-bold text-dark px-3 py-1 rounded-pill">
+                        {% if stats and stats.smart_revision_topic %}Revise with AI Tutor{% else %}Explore Roadmap{% endif %}
+                    </a>
+                </div>
+            </div>
+
+            <!-- 3 MAIN KPI METRIC CARDS (COMPACT ROW) -->
+            <div class="row g-2 g-md-4 mb-3 mb-md-4">
+                <div class="col-4">
+                    <div class="kpi-card">
+                        <div class="kpi-value text-primary">{{ goal_percent }}%</div>
+                        <div class="kpi-label">GOAL PROGRESS</div>
+                        <small class="text-muted d-block mt-1">{{ stats.today_studied_hours if stats else 0.0 }} / {{ stats.today_target_hours if stats else 6.0 }} hrs</small>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="kpi-card">
+                        <div class="kpi-value text-success">{{ syllabus_percent }}%</div>
+                        <div class="kpi-label">SYLLABUS PROGRESS</div>
+                        <small class="text-muted d-block mt-1">{{ stats.completed_units if stats else 0 }} of {{ stats.total_units if stats else 0 }} units</small>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="kpi-card">
+                        <div class="kpi-value text-warning">{{ stats.streak_days if stats else 1 }} Day{% if stats and stats.streak_days > 1 %}s{% endif %}</div>
+                        <div class="kpi-label">LEARNING STREAK</div>
+                        <small class="text-muted d-block mt-1">{% if stats and stats.streak_days > 3 %}🔥 Top 5%{% else %}🌱 Day 1 Active{% endif %}</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CLOSED-LOOP INTELLIGENCE FLYWHEEL (FROM SCREENSHOT) -->
+            <div class="flywheel-container">
+                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <h5 class="fw-bold mb-0 text-white d-flex align-items-center gap-2" style="font-size: 1rem;">
+                        <i class="fa-solid fa-wand-magic-sparkles text-warning"></i>
+                        StudyMate Closed-Loop Intelligence Flywheel
+                    </h5>
+                    <span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-50 px-2 px-md-3 py-1 rounded-pill" style="font-size: 11px;">
+                        ● All 9 Systems Synced
+                    </span>
+                </div>
+
+                <!-- 9 CONNECTED PIPELINE STEPS -->
+                <div class="flywheel-strip flywheel-grid mt-2">
+                    <div class="flywheel-step" onclick="showFlywheel(1)">
+                        <i class="fa-solid fa-file-signature"></i>
+                        <span>1. Quiz</span>
+                    </div>
+                    <div class="flywheel-step" onclick="showFlywheel(2)">
+                        <i class="fa-solid fa-magnifying-glass-chart"></i>
+                        <span>2. Mistake Analysis</span>
+                    </div>
+                    <div class="flywheel-step" onclick="showFlywheel(3)">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <span>3. Weakness</span>
+                    </div>
+                    <div class="flywheel-step" onclick="showFlywheel(4)">
+                        <i class="fa-solid fa-dna"></i>
+                        <span>4. Learning DNA</span>
+                    </div>
+                    <div class="flywheel-step" onclick="showFlywheel(5)">
+                        <i class="fa-solid fa-map"></i>
+                        <span>5. Roadmap</span>
+                    </div>
+                    <div class="flywheel-step" onclick="showFlywheel(6)">
+                        <i class="fa-solid fa-arrows-rotate"></i>
+                        <span>6. Revision</span>
+                    </div>
+                    <div class="flywheel-step" onclick="showFlywheel(7)">
+                        <i class="fa-solid fa-bullseye"></i>
+                        <span>7. New Quiz</span>
+                    </div>
+                    <div class="flywheel-step" onclick="showFlywheel(8)">
+                        <i class="fa-solid fa-chart-simple"></i>
+                        <span>8. Progress</span>
+                    </div>
+                    <div class="flywheel-step" onclick="showFlywheel(9)">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        <span>9. DNA Sync</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SEARCH BAR, SHUFFLE & MOBILE VIEW TOGGLE -->
+            <div class="d-flex justify-content-between align-items-center mb-3 mb-md-4 flex-wrap gap-2">
+                <div class="d-flex align-items-center gap-2">
+                    <h4 class="fw-bold mb-0 fs-5 fs-md-4">Platform Applications & Tools</h4>
+                    <span class="badge bg-secondary d-md-none" style="font-size: 10px;">17 Tools</span>
+                </div>
+                <div class="d-flex align-items-center gap-2 w-100 w-md-auto justify-content-between justify-content-md-end flex-wrap">
+                    <div class="btn-group btn-group-sm d-md-none" role="group" aria-label="Mobile view switcher">
+                        <button type="button" class="btn btn-outline-primary active" id="viewListBtn" onclick="toggleMobileView('list')" title="Compact Single-Row List View">
+                            <i class="fa-solid fa-bars"></i> Single
+                        </button>
+                        <button type="button" class="btn btn-outline-primary" id="viewGridBtn" onclick="toggleMobileView('grid')" title="Compact 2-Column Grid View">
+                            <i class="fa-solid fa-table-cells-large"></i> Grid
+                        </button>
+                    </div>
+                    <button type="button" onclick="shuffleDashboardCards()" class="btn btn-sm btn-outline-primary fw-semibold px-2 px-md-3 py-1 py-md-2" title="Randomize card layout">
+                        <i class="fa-solid fa-shuffle me-1"></i> <span class="d-none d-sm-inline">Shuffle Cards</span><span class="d-inline d-sm-none">Shuffle</span>
+                    </button>
+                    <input type="text" id="featureSearch" placeholder="Search feature..." class="form-control form-control-sm" style="max-width: 180px;">
+                </div>
+            </div>
+
+            <!-- ALL CARDS GRID: 18 FEATURES SHUFFLED WITH SETTINGS MOVED TO LAST -->
+            <div class="row g-2 g-md-4" id="featureCardsGrid">
+
+                <!-- 1. DIFFICULT TOPIC TUTOR [AI] -->
+                <div class="col-md-4 feature-card-col" data-card-key="tutor">
+                    <a href="/tutor" class="text-decoration-none">
+                        <div class="dashboard-card border border-danger border-opacity-50">
+                            <i class="fa-solid fa-graduation-cap card-icon text-danger"></i>
+                            <h3>Difficult Topic Tutor</h3>
+                            <p>Break down tough concepts with analogies & intuitive steps.</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- 2. AI DOUBT SOLVER -->
+                <div class="col-md-4 feature-card-col" data-card-key="doubt-solver">
+                    <a href="/doubt-solver" class="text-decoration-none">
+                        <div class="dashboard-card border border-primary border-opacity-50">
+                            <i class="fa-solid fa-question card-icon text-primary"></i>
+                            <h3>Doubt Solver</h3>
+                            <p>Upload questions and get instant AI answers.</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- 3. LEARNING ROADMAP -->
+                <div class="col-md-4 feature-card-col" data-card-key="roadmap">
+                    <a href="/learning-roadmap" class="text-decoration-none">
+                        <div class="dashboard-card border border-primary border-opacity-50">
+                            <i class="fa-solid fa-map-location-dot card-icon text-primary"></i>
+                            <h3>Learning Roadmap</h3>
+                            <p>Adaptive milestone syllabus progression & exam prep path.</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- 4. AI QUIZ GENERATOR -->
+                <div class="col-md-4 feature-card-col" data-card-key="quiz">
+                    <a href="/quiz" class="text-decoration-none">
+                        <div class="dashboard-card border border-warning border-opacity-50">
+                            <i class="fa-solid fa-brain card-icon text-warning"></i>
+                            <h3>AI Quiz Generator</h3>
+                            <p>Generate practice questions automatically.</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- 6. AI SUMMARIZER -->
+                <div class="col-md-4 feature-card-col" data-card-key="summarizer">
+                    <a href="/summarizer" class="text-decoration-none">
+                        <div class="dashboard-card">
+                            <i class="fa-solid fa-file-lines card-icon text-info"></i>
+                            <h3>AI Summarizer</h3>
+                            <p>Generate smart summaries instantly.</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- 7. GK ZONE -->
+                <div class="col-md-4 feature-card-col" data-card-key="gk-zone">
+                    <a href="/gk-zone" class="text-decoration-none">
+                        <div class="dashboard-card border border-warning border-opacity-50">
+                            <i class="fa-solid fa-globe card-icon text-warning"></i>
+                            <h3>GK Zone</h3>
+                            <p>Daily general knowledge & competitive trivia questions.</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- 8. AI CHATBOT -->
+                <div class="col-md-4 feature-card-col" data-card-key="chatbot">
+                    <a href="/chatbot" class="text-decoration-none">
+                        <div class="dashboard-card">
+                            <i class="fa-solid fa-robot card-icon text-primary"></i>
+                            <h3>AI Chatbot</h3>
+                            <p>Ask questions and get instant AI answers.</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- 9. CAREER ROADMAP -->
+                <div class="col-md-4 feature-card-col" data-card-key="career-roadmap">
+                    <a href="/career-roadmap" class="text-decoration-none">
+                        <div class="dashboard-card border border-info border-opacity-50">
+                            <i class="fa-solid fa-briefcase card-icon text-info"></i>
+                            <h3>Career Roadmap</h3>
+                            <p>Career paths, salary benchmarks & skill certifications.</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- 10. OCR TOOL -->
+                <div class="col-md-4 feature-card-col" data-card-key="ocr">
+                    <a href="/ocr" class="text-decoration-none">
+                        <div class="dashboard-card">
+                            <i class="fa-solid fa-image card-icon text-secondary"></i>
+                            <h3>OCR Tool</h3>
+                            <p>Extract handwritten notes from images.</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- 11. STUDY PLANNER -->
+                <div class="col-md-4 feature-card-col" data-card-key="planner">
+                    <a href="/planner" class="text-decoration-none">
+                        <div class="dashboard-card">
+                            <i class="fa-solid fa-calendar card-icon text-success"></i>
+                            <h3>Study Planner</h3>
+                            <p>Create schedules based on exam dates.</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- 12. PDF SUMMARIZER -->
+                <div class="col-md-4 feature-card-col" data-card-key="pdf-summary">
+                    <a href="/pdf-summary" class="text-decoration-none">
+                        <div class="dashboard-card">
+                            <i class="fa-solid fa-file-pdf card-icon text-danger"></i>
+                            <h3>PDF Summarizer</h3>
+                            <p>Upload PDF documents and get summaries.</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- 13. AUDIO TO TEXT -->
+                <div class="col-md-4 feature-card-col" data-card-key="audio">
+                    <a href="/audio" class="text-decoration-none">
+                        <div class="dashboard-card">
+                            <i class="fa-solid fa-microphone card-icon text-warning"></i>
+                            <h3>Audio To Text</h3>
+                            <p>Convert lectures into notes.</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- 14. AI TIMETABLE -->
+                <div class="col-md-4 feature-card-col" data-card-key="timetable">
+                    <a href="/timetable" class="text-decoration-none">
+                        <div class="dashboard-card">
+                            <i class="fa-solid fa-calendar-days card-icon text-primary"></i>
+                            <h3>AI Timetable</h3>
+                            <p>Generate personalized study timetables.</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- 15. KNOWLEDGE BASE -->
+                <div class="col-md-4 feature-card-col" data-card-key="notes">
+                    <a href="/notes" class="text-decoration-none">
+                        <div class="dashboard-card">
+                            <i class="fa-solid fa-book card-icon text-info"></i>
+                            <h3>Knowledge Base</h3>
+                            <p>Store study materials and assignments.</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- 16. SMART REMINDERS -->
+                <div class="col-md-4 feature-card-col" data-card-key="reminders">
+                    <a href="/reminders" class="text-decoration-none">
+                        <div class="dashboard-card">
+                            <i class="fa-solid fa-bell card-icon text-warning"></i>
+                            <h3>Reminders</h3>
+                            <p>Get study alerts and reminders.</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- 17. RESUME BUILDER -->
+                <div class="col-md-4 feature-card-col" data-card-key="resume">
+                    <a href="/resume" class="text-decoration-none">
+                        <div class="dashboard-card">
+                            <i class="fa-solid fa-address-card card-icon text-success"></i>
+                            <h3>Resume Builder</h3>
+                            <p>Build and download professional resumes.</p>
+                        </div>
+                    </a>
+                </div>
+
+                <!-- 18. SETTINGS & TARGETS (MOVED TO LAST) -->
+                <div class="col-md-4 feature-card-col" data-card-key="settings">
+                    <a href="/settings" class="text-decoration-none">
+                        <div class="dashboard-card border border-secondary border-opacity-50">
+                            <i class="fa-solid fa-gear card-icon text-secondary"></i>
+                            <h3>Settings & Targets</h3>
+                            <p>Configure daily study quotas & revision notifications.</p>
+                        </div>
+                    </a>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- FLYWHEEL MODAL POPUP -->
+    <div class="modal fade" id="flywheelModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius: 20px;">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold text-primary" id="flywheelModalTitle">Flywheel System Sync</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body py-4" id="flywheelModalBody">
+                    Loading live diagnostic data...
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-sm btn-primary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- THEME CONTROLLER -->
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+    <script>
+        // Interactive Dashboard Cards Shuffle
+        function shuffleDashboardCards() {
+            const grid = document.getElementById('featureCardsGrid');
+            if (!grid) return;
+            const items = Array.from(grid.querySelectorAll('.feature-card-col'));
+            const settingsCard = items.find(col => col.dataset.cardKey === 'settings');
+            const otherCards = items.filter(col => col.dataset.cardKey !== 'settings');
+
+            // Fisher-Yates Shuffle on non-settings cards
+            for (let i = otherCards.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [otherCards[i], otherCards[j]] = [otherCards[j], otherCards[i]];
+            }
+
+            // Re-append to grid: shuffled cards first, settings card strictly last
+            otherCards.forEach(card => grid.appendChild(card));
+            if (settingsCard) grid.appendChild(settingsCard);
+        }
+
+        // Mobile View Switcher (Single-Row List vs 2-Column Grid)
+        function toggleMobileView(mode) {
+            const grid = document.getElementById('featureCardsGrid');
+            const listBtn = document.getElementById('viewListBtn');
+            const gridBtn = document.getElementById('viewGridBtn');
+            if (!grid) return;
+            if (mode === 'grid') {
+                grid.classList.add('mobile-grid-view');
+                if (gridBtn) gridBtn.classList.add('active');
+                if (listBtn) listBtn.classList.remove('active');
+            } else {
+                grid.classList.remove('mobile-grid-view');
+                if (listBtn) listBtn.classList.add('active');
+                if (gridBtn) gridBtn.classList.remove('active');
+            }
+        }
+
+        // Feature Search Filtering
+        const searchInput = document.getElementById('featureSearch');
+        if (searchInput) {
+            searchInput.addEventListener('keyup', function () {
+                let filter = searchInput.value.toLowerCase();
+                let cards = document.querySelectorAll('.dashboard-card');
+                cards.forEach(card => {
+                    let text = card.innerText.toLowerCase();
+                    if (text.includes(filter)) {
+                        card.parentElement.parentElement.style.display = "block";
+                    } else {
+                        card.parentElement.parentElement.style.display = "none";
+                    }
+                });
+            });
+        }
+
+
+
+        // Flywheel Interactive Diagnostics (Live from MySQL Database)
+        function showFlywheel(step) {
+            document.getElementById('flywheelModalTitle').innerHTML = `<i class="fa-solid fa-wand-magic-sparkles text-primary me-2"></i> Syncing Module ${step}...`;
+            document.getElementById('flywheelModalBody').innerHTML = `
+                <div class="text-center py-4">
+                    <div class="spinner-border text-primary" role="status"></div>
+                    <p class="text-muted small mt-2 mb-0">Querying real-time database state...</p>
+                </div>
+            `;
+            const modal = new bootstrap.Modal(document.getElementById('flywheelModal'));
+            modal.show();
+
+            fetch('/api/flywheel/' + step)
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById('flywheelModalTitle').innerHTML = `<i class="fa-solid fa-wand-magic-sparkles text-primary me-2"></i> ${data.title}`;
+                    document.getElementById('flywheelModalBody').innerHTML = `
+                        <div class="p-3 rounded mb-3 flywheel-detail-box">
+                            <p class="mb-0 fs-6 fw-medium" style="color: inherit !important;">${data.detail}</p>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 pt-2 border-top border-secondary border-opacity-25">
+                            <span class="text-success small fw-bold"><i class="fa-solid fa-circle-check me-1"></i> MySQL Verified</span>
+                            <a href="${data.url}" class="btn btn-sm btn-primary fw-bold px-3 py-1">${data.action_text} <i class="fa-solid fa-arrow-right ms-1"></i></a>
+                        </div>
+                    `;
+                })
+                .catch(err => {
+                    document.getElementById('flywheelModalBody').innerHTML = `
+                        <div class="alert alert-danger mb-0">Failed to query live flywheel status.</div>
+                    `;
+                });
+        }
+    </script>
+</body>
+
+</html>

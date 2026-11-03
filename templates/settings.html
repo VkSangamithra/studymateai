@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings & Academic Targets - StudyMate AI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="dashboard-body">
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <h2 class="logo">StudyMate AI</h2>
+        <ul class="sidebar-menu">
+            <li><a href="/dashboard"><i class="fa-solid fa-house"></i> Dashboard</a></li>
+            <li><a href="/tutor"><i class="fa-solid fa-graduation-cap"></i> Difficult Topic Tutor <span class="badge bg-danger ms-auto" style="font-size:10px;">AI</span></a></li>
+            <li><a href="/doubt-solver"><i class="fa-solid fa-question"></i> AI Doubt Solver</a></li>
+            <li><a href="/learning-roadmap"><i class="fa-solid fa-map-location-dot"></i> Learning Roadmap</a></li>
+            <li><a href="/analytics"><i class="fa-solid fa-chart-line"></i> Progress & Analytics</a></li>
+            <li><a href="/quiz"><i class="fa-solid fa-brain"></i> Quiz & Practice</a></li>
+            <li><a href="/gk-zone"><i class="fa-solid fa-globe"></i> GK Zone</a></li>
+            <li><a href="/career-roadmap"><i class="fa-solid fa-briefcase"></i> Career Roadmap</a></li>
+            <li><a href="/profile"><i class="fa-solid fa-user"></i> Student Profile</a></li>
+            <li><a href="/settings" class="active"><i class="fa-solid fa-gear"></i> Settings</a></li>
+            <li><a href="/logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</a></li>
+        </ul>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        <!-- TOPBAR -->
+        <div class="topbar d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <div>
+                <a href="/dashboard" class="text-decoration-none text-muted small"><i class="fa-solid fa-arrow-left"></i> Back to Dashboard</a>
+                <h3 class="mb-0 mt-1">Platform Settings & Learning Targets ⚙️</h3>
+            </div>
+            <button id="themeToggleBtn" onclick="toggleDarkMode()" class="btn btn-dark theme-toggle-btn">☀️ Light Mode</button>
+        </div>
+
+        {% if message %}
+        <div class="alert alert-success border-0 bg-success bg-opacity-25 text-success mb-4">
+            {{ message }}
+        </div>
+        {% endif %}
+
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="card p-4">
+                    <h5 class="fw-bold mb-4"><i class="fa-solid fa-bullseye text-danger me-2"></i>Daily Study Targets & Quotas (MySQL DB)</h5>
+                    <form method="POST">
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Daily Study Target (Hours)</label>
+                                <input type="number" step="0.5" class="form-control" name="daily_hours" value="{{ stats.today_target_hours if stats else 6.0 }}" min="1" max="16" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Hours Studied Today</label>
+                                <input type="number" step="0.1" class="form-control" name="studied_hours" value="{{ stats.today_studied_hours if stats else 0.0 }}" min="0" max="24" required>
+                            </div>
+                        </div>
+
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label">Smart Revision Focus Topic</label>
+                                <input type="text" class="form-control" name="rev_topic" value="{{ stats.smart_revision_topic if stats and stats.smart_revision_topic else '' }}" placeholder="e.g. Dynamic Programming, Calculus...">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Dominant Learning Style</label>
+                                <select name="learning_style" class="form-select">
+                                    <option value="Visual & Analogy-Driven" {% if stats and stats.dominant_learning_style == 'Visual & Analogy-Driven' %}selected{% endif %}>Visual & Analogy-Driven</option>
+                                    <option value="Active Practice & Coding" {% if stats and stats.dominant_learning_style == 'Active Practice & Coding' %}selected{% endif %}>Active Practice & Coding</option>
+                                    <option value="Auditory & Conceptual" {% if stats and stats.dominant_learning_style == 'Auditory & Conceptual' %}selected{% endif %}>Auditory & Conceptual</option>
+                                    <option value="Reading & Structured Notes" {% if stats and stats.dominant_learning_style == 'Reading & Structured Notes' %}selected{% endif %}>Reading & Structured Notes</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <h5 class="fw-bold mb-3"><i class="fa-solid fa-bell text-danger me-2"></i>Smart AI Revision Notifications</h5>
+                        <div class="mb-3 form-check form-switch">
+                            <input class="form-check-input bg-danger border-0" type="checkbox" id="revAlerts" checked>
+                            <label class="form-check-label" for="revAlerts">Enable Spaced-Repetition Smart Alerts for "{{ stats.smart_revision_topic if stats else 'Quadratic Equations' }}"</label>
+                        </div>
+                        <div class="mb-4 form-check form-switch">
+                            <input class="form-check-input bg-danger border-0" type="checkbox" id="streakReminders" checked>
+                            <label class="form-check-label" for="streakReminders">Daily Streak Continuity Alarm (at 8:00 PM)</label>
+                        </div>
+
+                        <h5 class="fw-bold mb-3"><i class="fa-solid fa-palette text-danger me-2"></i>Theme Configuration</h5>
+                        <div class="d-flex gap-3 mb-4">
+                            <button type="button" onclick="applyTheme('dark'); localStorage.setItem('studymate_theme', 'dark');" class="btn btn-outline-danger active px-4 py-2">
+                                🌙 Dark Mode (Black & Crimson)
+                            </button>
+                            <button type="button" onclick="applyTheme('light'); localStorage.setItem('studymate_theme', 'light');" class="btn btn-outline-secondary px-4 py-2">
+                                ☀️ Light Mode (Clean Slate)
+                            </button>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary px-5 py-2 fw-bold">
+                            Save Preferences to MySQL
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card p-4">
+                    <h5 class="fw-bold mb-3"><i class="fa-solid fa-id-badge text-danger me-2"></i>Account Overview</h5>
+                    <div class="text-center py-3">
+                        <div class="rounded-circle mx-auto d-flex align-items-center justify-content-center text-white fw-bold fs-2 mb-3" style="width: 80px; height: 80px; background: linear-gradient(135deg, #ff1a40, #991b1b); box-shadow: 0 0 20px rgba(255,26,64,0.5);">
+                            {{ name[0] | upper }}
+                        </div>
+                        <h5 class="fw-bold mb-0">{{ name }}</h5>
+                        <span class="badge bg-danger bg-opacity-25 text-danger border border-danger border-opacity-50 mt-1">Student Account • Level {{ stats.level if stats else 3 }}</span>
+                    </div>
+                    <div class="border-top border-secondary border-opacity-25 pt-3 mt-2">
+                        <div class="d-flex justify-content-between text-muted small mb-2">
+                            <span>Status</span>
+                            <span class="text-success fw-bold">Active & Enrolled</span>
+                        </div>
+                        <div class="d-flex justify-content-between text-muted small mb-2">
+                            <span>Study Streak</span>
+                            <span class="text-warning fw-bold">🔥 {{ stats.streak_days if stats else 7 }} Days Active</span>
+                        </div>
+                        <div class="d-flex justify-content-between text-muted small">
+                            <span>Connected Flywheel</span>
+                            <span class="fw-bold">All 9 Systems Synced</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+    <title>
+        StudyMate AI
+    </title>
+
+    <!-- Bootstrap CSS -->
+
+    <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet">
+
+    <!-- Custom CSS -->
+
+    <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
+
+        <div class="container">
+
+            <a class="navbar-brand fw-bold"
+            href="/">
+
+                StudyMate AI
+
+            </a>
+
+            <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav">
+
+                <span class="navbar-toggler-icon"></span>
+
+            </button>
+
+            <div
+            class="collapse navbar-collapse"
+            id="navbarNav">
+
+                <ul class="navbar-nav ms-auto align-items-center">
+
+                    <li class="nav-item">
+
+                        <a class="nav-link active"
+                        href="/">
+
+                            Home
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
+
+                        <a class="nav-link"
+                        href="#features">
+
+                            Features
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
+
+                        <a class="nav-link"
+                        href="#about">
+
+                            About
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
+
+                        <a
+                        class="nav-link btn btn-primary text-white px-3 ms-2"
+                        href="/login">
+
+                            Login
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
+
+                        <a
+                        class="nav-link btn btn-outline-light px-3 ms-2"
+                        href="/register">
+
+                            Register
+
+                        </a>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+    <!-- HERO SECTION -->
+
+    <section
+    class="hero-section text-center text-white d-flex align-items-center">
+
+        <div class="container">
+
+            <h1 class="display-3 fw-bold">
+
+                Your Smart AI Study Companion
+
+            </h1>
+
+            <p class="lead mt-4">
+
+                Summarize notes, convert handwriting to text,
+                create smart schedules, manage reminders
+                and improve productivity using AI.
+
+            </p>
+
+            <div class="mt-4">
+
+                <a
+                href="/register"
+                class="btn btn-primary btn-lg me-3">
+
+                    Get Started
+
+                </a>
+
+                <a
+                href="#features"
+                class="btn btn-outline-light btn-lg">
+
+                    Explore Features
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- FEATURES SECTION -->
+
+    <section
+    class="py-5 bg-light"
+    id="features">
+
+        <div class="container">
+
+            <h2 class="text-center fw-bold mb-5">
+
+                Platform Features
+
+            </h2>
+
+            <div class="row g-4">
+
+                <!-- AI SUMMARIZER -->
+
+                <div class="col-md-4">
+
+                    <div class="card shadow border-0 h-100 text-center p-4">
+
+                        <h1>📄</h1>
+
+                        <h3>AI Summarizer</h3>
+
+                        <p>
+
+                            Convert long paragraphs into
+                            short intelligent summaries.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <!-- OCR -->
+
+                <div class="col-md-4">
+
+                    <div class="card shadow border-0 h-100 text-center p-4">
+
+                        <h1>🖼️</h1>
+
+                        <h3>OCR Tool</h3>
+
+                        <p>
+
+                            Extract handwritten notes
+                            from notebook images.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <!-- AUDIO -->
+
+                <div class="col-md-4">
+
+                    <div class="card shadow border-0 h-100 text-center p-4">
+
+                        <h1>🎤</h1>
+
+                        <h3>Audio to Text</h3>
+
+                        <p>
+
+                            Convert lectures and recordings
+                            into editable notes.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <!-- STUDY PLANNER -->
+
+                <div class="col-md-4">
+
+                    <div class="card shadow border-0 h-100 text-center p-4">
+
+                        <h1>📅</h1>
+
+                        <h3>Study Planner</h3>
+
+                        <p>
+
+                            Create smart schedules
+                            based on exam dates.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <!-- REMINDERS -->
+
+                <div class="col-md-4">
+
+                    <div class="card shadow border-0 h-100 text-center p-4">
+
+                        <h1>🔔</h1>
+
+                        <h3>Smart Reminders</h3>
+
+                        <p>
+
+                            Receive study reminders
+                            and assignment alerts.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <!-- CHATBOT -->
+
+                <div class="col-md-4">
+
+                    <div class="card shadow border-0 h-100 text-center p-4">
+
+                        <h1>🤖</h1>
+
+                        <h3>AI Chatbot</h3>
+
+                        <p>
+
+                            Ask questions and get
+                            instant AI-powered answers.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <!-- QUIZ -->
+
+                <div class="col-md-4">
+
+                    <div class="card shadow border-0 h-100 text-center p-4">
+
+                        <h1>🧠</h1>
+
+                        <h3>AI Quiz Generator</h3>
+
+                        <p>
+
+                            Generate quizzes automatically
+                            for any topic.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <!-- RESUME -->
+
+                <div class="col-md-4">
+
+                    <div class="card shadow border-0 h-100 text-center p-4">
+
+                        <h1>📋</h1>
+
+                        <h3>Resume Builder</h3>
+
+                        <p>
+
+                            Create professional resumes
+                            and download PDF/DOCX.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <!-- PDF -->
+
+                <div class="col-md-4">
+
+                    <div class="card shadow border-0 h-100 text-center p-4">
+
+                        <h1>📕</h1>
+
+                        <h3>PDF Summarizer</h3>
+
+                        <p>
+
+                            Upload PDFs and generate
+                            AI-powered summaries.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <!-- TIMETABLE -->
+
+                <div class="col-md-4">
+
+                    <div class="card shadow border-0 h-100 text-center p-4">
+
+                        <h1>🗓️</h1>
+
+                        <h3>AI Timetable</h3>
+
+                        <p>
+
+                            Generate personalized
+                            study timetables instantly.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <!-- DOUBT SOLVER -->
+
+                <div class="col-md-4">
+
+                    <div class="card shadow border-0 h-100 text-center p-4">
+
+                        <h1>📷</h1>
+
+                        <h3>Doubt Solver</h3>
+
+                        <p>
+
+                            Upload question images
+                            and get instant answers.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <!-- NOTES -->
+
+                <div class="col-md-4">
+
+                    <div class="card shadow border-0 h-100 text-center p-4">
+
+                        <h1>📚</h1>
+
+                        <h3>Knowledge Base</h3>
+
+                        <p>
+
+                            Store notes, assignments,
+                            and learning resources.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ABOUT SECTION -->
+
+    <section
+    class="py-5"
+    id="about">
+
+        <div class="container text-center">
+
+            <h2 class="fw-bold mb-4">
+
+                About StudyMate AI
+
+            </h2>
+
+            <p class="lead">
+
+                 StudyMate AI is an advanced AI-powered student learning platform
+    designed to simplify studying through smart summarization,
+    OCR text extraction, AI chat assistance, quiz generation,
+    resume building, timetable creation, PDF summarization,
+    and intelligent productivity management in one modern system.
+            </p>
+
+        </div>
+
+    </section>
+
+    <!-- FOOTER -->
+
+    <footer
+    class="bg-dark text-white text-center py-4">
+
+        <p class="mb-0">
+
+            © 2026 StudyMate AI |
+            Intelligent Student Productivity Platform
+
+        </p>
+
+    </footer>
+
+    <!-- Bootstrap JS -->
+
+    <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+
+    </script>
+
+</body>
+
+</html>

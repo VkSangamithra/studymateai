@@ -1,0 +1,740 @@
+body{
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Navbar */
+
+.navbar-brand{
+    font-size: 28px;
+}
+
+/* Hero Section */
+
+.hero-section{
+    height: 90vh;
+
+    background: linear-gradient(
+        rgba(0,0,0,0.7),
+        rgba(0,0,0,0.7)
+    ),
+    url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3');
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Hero Content */
+
+.hero-section h1{
+    font-size: 60px;
+}
+
+.hero-section p{
+    font-size: 20px;
+    max-width: 800px;
+    margin: auto;
+}
+
+/* Buttons */
+
+.btn-primary{
+    border-radius: 30px;
+    padding: 12px 30px;
+}
+
+.btn-outline-light{
+    border-radius: 30px;
+    padding: 12px 30px;
+}
+
+/* Feature Cards */
+
+.feature-card{
+    transition: 0.3s;
+    border: none;
+    border-radius: 15px;
+}
+
+.feature-card:hover{
+    transform: translateY(-10px);
+}
+
+/* Footer */
+
+footer{
+    font-size: 16px;
+}
+
+/* Dashboard */
+
+.dashboard-body{
+    background: #f4f7fc;
+    display: flex;
+}
+
+/* Sidebar */
+
+.sidebar{
+
+    width:280px;
+
+    height:100vh;
+
+    background:#071739;
+
+    position:fixed;
+
+    left:0;
+
+    top:0;
+
+    padding:30px 20px;
+
+    overflow-y:auto;
+
+    scrollbar-width:thin;
+
+}
+
+.logo{
+    text-align: center;
+    margin-bottom: 40px;
+    font-weight: bold;
+}
+
+.sidebar-menu{
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar-menu li{
+    padding: 15px 25px;
+}
+
+.sidebar-menu li a{
+    color: white;
+    text-decoration: none;
+    display: block;
+    transition: 0.3s;
+    font-size: 18px;
+}
+
+.sidebar-menu li a:hover{
+    background: #2563eb;
+    padding-left: 10px;
+    border-radius: 8px;
+}
+
+/* Main Content */
+
+.main-content{
+    margin-left: 260px;
+    padding: 30px;
+    width: 100%;
+}
+
+/* Topbar */
+
+.topbar{
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0px 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Dashboard Cards */
+
+.dashboard-card {
+
+    background: white;
+
+    border-radius: 25px;
+
+    padding: 40px;
+
+    text-align: center;
+
+    height: 320px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+
+    transition: 0.3s;
+
+}
+.dashboard-card:hover{
+    transform: translateY(-10px);
+}
+
+.card-icon {
+
+    font-size: 60px;
+
+    color: #2563eb;
+
+    margin-bottom: 20px;
+
+    display: block;
+
+}
+/* ============================================================== */
+/* MOBILE COMPACT RESPONSIVE SYSTEM (FOR MOBILES & TABLETS <= 768px) */
+/* ============================================================== */
+
+@media (max-width: 768px) {
+    /* 1. Body & Layout */
+    .dashboard-body {
+        flex-direction: column !important;
+        overflow-x: hidden;
+    }
+
+    /* 2. Collapsible Mobile Navigation Header */
+    .sidebar {
+        width: 100% !important;
+        height: auto !important;
+        position: relative !important;
+        padding: 12px 16px !important;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2) !important;
+        z-index: 1000;
+    }
+
+    .sidebar .logo {
+        margin-bottom: 0 !important;
+        font-size: 1.25rem !important;
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+    }
+
+    .sidebar-menu {
+        display: none;
+        padding-top: 10px;
+        margin-top: 10px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar-menu.show {
+        display: block !important;
+    }
+
+    .sidebar-menu li {
+        padding: 8px 12px !important;
+    }
+
+    .sidebar-menu li a {
+        font-size: 14.5px !important;
+        padding: 6px 10px !important;
+    }
+
+    /* 3. Main Content Container */
+    .main-content {
+        margin-left: 0 !important;
+        padding: 10px 12px !important;
+        width: 100% !important;
+    }
+
+    /* 4. Topbar Header */
+    .topbar {
+        padding: 12px 14px !important;
+        border-radius: 12px !important;
+        margin-bottom: 12px !important;
+        gap: 10px !important;
+    }
+
+    .topbar h3 {
+        font-size: 1.15rem !important;
+    }
+
+    /* 5. Welcome Banner */
+    .welcome-banner {
+        padding: 16px 14px !important;
+        border-radius: 14px !important;
+        margin-bottom: 12px !important;
+    }
+
+    .welcome-banner h1 {
+        font-size: 1.35rem !important;
+        margin-bottom: 4px !important;
+    }
+
+    .welcome-banner p.fs-5 {
+        font-size: 0.9rem !important;
+    }
+
+    .smart-revision-alert {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 8px !important;
+        padding: 10px 12px !important;
+        border-radius: 10px !important;
+    }
+
+    /* 6. KPI Metrics Cards: Compact Strip */
+    .kpi-card {
+        padding: 10px 6px !important;
+        border-radius: 12px !important;
+        text-align: center !important;
+    }
+
+    .kpi-value {
+        font-size: 1.25rem !important;
+        margin-bottom: 2px !important;
+    }
+
+    .kpi-label {
+        font-size: 9px !important;
+        letter-spacing: 0.2px !important;
+        line-height: 1.2 !important;
+    }
+
+    .kpi-card small {
+        font-size: 9px !important;
+        margin-top: 4px !important;
+    }
+
+    /* 7. Flywheel Horizontal Swipe */
+    .flywheel-container {
+        padding: 12px !important;
+        border-radius: 14px !important;
+        margin-bottom: 14px !important;
+    }
+
+    .flywheel-grid {
+        display: flex !important;
+        overflow-x: auto !important;
+        flex-wrap: nowrap !important;
+        gap: 8px !important;
+        padding-bottom: 6px !important;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .flywheel-step {
+        flex: 0 0 auto !important;
+        padding: 6px 10px !important;
+        font-size: 11px !important;
+        border-radius: 8px !important;
+    }
+
+    .flywheel-step i {
+        font-size: 13px !important;
+        margin-right: 4px !important;
+    }
+
+    /* 8. FEATURE CARDS: COMPACT SINGLE-ROW ("SINGLE SINGLE") LIST */
+    .feature-card-col {
+        margin-bottom: 6px !important;
+        padding-left: 2px !important;
+        padding-right: 2px !important;
+        width: 100% !important;
+        flex: 0 0 100% !important;
+        max-width: 100% !important;
+    }
+
+    .dashboard-card {
+        height: auto !important;
+        min-height: 58px !important;
+        padding: 10px 14px !important;
+        border-radius: 12px !important;
+        flex-direction: row !important;
+        justify-content: flex-start !important;
+        align-items: center !important;
+        text-align: left !important;
+        gap: 12px !important;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05) !important;
+        position: relative;
+    }
+
+    .dashboard-card:hover {
+        transform: translateY(-2px) !important;
+    }
+
+    .card-icon {
+        font-size: 24px !important;
+        margin-bottom: 0 !important;
+        flex-shrink: 0 !important;
+        width: 36px !important;
+        height: 36px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+
+    .dashboard-card h3 {
+        font-size: 14px !important;
+        margin-bottom: 2px !important;
+        font-weight: 700 !important;
+        line-height: 1.2 !important;
+    }
+
+    .dashboard-card p {
+        font-size: 11.5px !important;
+        margin-bottom: 0 !important;
+        line-height: 1.25 !important;
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    /* Chevron arrow affordance on mobile right side */
+    .dashboard-card::after {
+        content: "\f054";
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
+        margin-left: auto;
+        font-size: 11px;
+        opacity: 0.4;
+        flex-shrink: 0;
+    }
+
+    /* Optional Grid View Alternative */
+    .mobile-grid-view .feature-card-col {
+        width: 50% !important;
+        flex: 0 0 50% !important;
+        max-width: 50% !important;
+        padding-left: 3px !important;
+        padding-right: 3px !important;
+    }
+
+    .mobile-grid-view .dashboard-card {
+        flex-direction: column !important;
+        height: 125px !important;
+        min-height: 125px !important;
+        padding: 12px 8px !important;
+        text-align: center !important;
+        justify-content: center !important;
+        gap: 6px !important;
+    }
+
+    .mobile-grid-view .dashboard-card::after {
+        display: none !important;
+    }
+
+    .mobile-grid-view .card-icon {
+        margin-bottom: 4px !important;
+        font-size: 26px !important;
+    }
+
+    .mobile-grid-view .dashboard-card h3 {
+        font-size: 12px !important;
+        margin-bottom: 0 !important;
+    }
+
+    .mobile-grid-view .dashboard-card p {
+        display: none !important;
+    }
+
+    /* Universal Mobile Compact Cards & Gutters across all pages */
+    .card.p-4 {
+        padding: 16px 14px !important;
+    }
+    .card.p-3 {
+        padding: 12px 12px !important;
+    }
+    .row.g-4 {
+        --bs-gutter-x: 0.6rem !important;
+        --bs-gutter-y: 0.6rem !important;
+    }
+    .btn {
+        padding: 7px 14px;
+        font-size: 13.5px;
+    }
+}
+
+/* ============================================================== */
+/* THEME & CONTRAST SYSTEM (LIGHT & DARK MODE SAFEGUARDS)         */
+/* ============================================================== */
+
+/* Base Cards & Typography */
+.card {
+    background-color: #ffffff;
+    color: #0f172a;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+    transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+.card h1, .card h2, .card h3, .card h4, .card h5, .card h6 {
+    color: #0f172a;
+}
+
+.form-label {
+    color: #1e293b;
+    font-weight: 600;
+}
+
+.form-control, .form-select {
+    background-color: #ffffff;
+    color: #0f172a;
+    border: 1px solid #cbd5e1;
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: #ffffff;
+    color: #0f172a;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 0.25rem rgba(37, 99, 235, 0.2);
+}
+
+.btn-warning {
+    color: #0f172a !important;
+    font-weight: 600;
+}
+
+/* -------------------------------------------------------------- */
+/* LIGHT MODE ENFORCEMENT                                         */
+/* -------------------------------------------------------------- */
+body:not(.dark-mode),
+body.light-mode {
+    background: #f4f7fc !important;
+    color: #0f172a !important;
+}
+
+body:not(.dark-mode) .dashboard-body,
+body.light-mode .dashboard-body {
+    background: #f4f7fc !important;
+}
+
+body:not(.dark-mode) .main-content,
+body.light-mode .main-content {
+    background: #f4f7fc !important;
+}
+
+body:not(.dark-mode) .topbar,
+body.light-mode .topbar {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border: 1px solid #e2e8f0;
+}
+
+body:not(.dark-mode) .topbar h1, body:not(.dark-mode) .topbar h2, body:not(.dark-mode) .topbar h3,
+body.light-mode .topbar h1, body.light-mode .topbar h2, body.light-mode .topbar h3 {
+    color: #0f172a !important;
+}
+
+body:not(.dark-mode) .card,
+body:not(.dark-mode) .dashboard-card,
+body:not(.dark-mode) .reminder-card,
+body:not(.dark-mode) .chat-card,
+body.light-mode .card,
+body.light-mode .dashboard-card,
+body.light-mode .reminder-card,
+body.light-mode .chat-card {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border: 1px solid #e2e8f0 !important;
+}
+
+body:not(.dark-mode) .card h1, body:not(.dark-mode) .card h2, body:not(.dark-mode) .card h3,
+body:not(.dark-mode) .card h4, body:not(.dark-mode) .card h5, body:not(.dark-mode) .card h6,
+body.light-mode .card h1, body.light-mode .card h2, body.light-mode .card h3,
+body.light-mode .card h4, body.light-mode .card h5, body.light-mode .card h6 {
+    color: #0f172a !important;
+}
+
+/* Light mode safeguard: prevent white-on-white text across all card content */
+body:not(.dark-mode) .card .text-white:not(.btn):not(.badge),
+body.light-mode .card .text-white:not(.btn):not(.badge) {
+    color: #0f172a !important;
+}
+
+/* -------------------------------------------------------------- */
+/* DARK MODE ENFORCEMENT                                          */
+/* -------------------------------------------------------------- */
+body.dark-mode {
+    background: #0d0609 !important;
+    color: #f8fafc !important;
+}
+
+body.dark-mode .dashboard-body {
+    background: #0d0609 !important;
+}
+
+body.dark-mode .main-content {
+    background: #14090d !important;
+}
+
+body.dark-mode .topbar {
+    background: #1c0e14 !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 30, 60, 0.15) !important;
+}
+
+body.dark-mode .topbar h1,
+body.dark-mode .topbar h2,
+body.dark-mode .topbar h3,
+body.dark-mode .topbar p {
+    color: #f8fafc !important;
+}
+
+body.dark-mode .card,
+body.dark-mode .dashboard-card,
+body.dark-mode .reminder-card,
+body.dark-mode .chat-card,
+body.dark-mode .material-card {
+    background: #190c12 !important;
+    color: #f8fafc !important;
+    border: 1px solid rgba(255, 30, 60, 0.18) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+}
+
+body.dark-mode .card h1,
+body.dark-mode .card h2,
+body.dark-mode .card h3,
+body.dark-mode .card h4,
+body.dark-mode .card h5,
+body.dark-mode .card h6 {
+    color: #ffffff !important;
+}
+
+body.dark-mode .form-label {
+    color: #f1f5f9 !important;
+}
+
+body.dark-mode .form-control,
+body.dark-mode .form-select {
+    background-color: #210e16 !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 30, 60, 0.28) !important;
+}
+
+body.dark-mode .form-control::placeholder {
+    color: #94a3b8 !important;
+}
+
+body.dark-mode .sidebar {
+    background: #080305 !important;
+    border-right: 1px solid rgba(255, 30, 60, 0.12);
+}
+
+body.dark-mode a {
+    color: #f1f5f9;
+}
+
+body.dark-mode a.text-decoration-none,
+body.dark-mode a.text-muted {
+    color: #cbd5e1 !important;
+}
+
+body.dark-mode a.text-decoration-none:hover,
+body.dark-mode a.text-muted:hover {
+    color: #ffffff !important;
+}
+
+/* HIGH CONTRAST SUBTEXT & MUTED OVERRIDES IN DARK MODE */
+body.dark-mode p,
+body.dark-mode span:not(.badge):not(.btn) {
+    color: #e2e8f0;
+}
+
+body.dark-mode .text-muted,
+body.dark-mode .text-muted *,
+body.dark-mode p.text-muted,
+body.dark-mode span.text-muted,
+body.dark-mode small.text-muted,
+body.dark-mode div.text-muted {
+    color: #cbd5e1 !important;
+}
+
+body.dark-mode small {
+    color: #cbd5e1 !important;
+}
+
+body.dark-mode .form-control::placeholder {
+    color: #94a3b8 !important;
+    opacity: 1 !important;
+}
+
+body.dark-mode .btn-outline-danger {
+    color: #ff6b81 !important;
+    border-color: #ff3355 !important;
+    background-color: rgba(255, 51, 85, 0.1) !important;
+}
+
+body.dark-mode .btn-outline-danger:hover {
+    color: #ffffff !important;
+    background-color: #ff1a40 !important;
+    border-color: #ff1a40 !important;
+}
+
+/* HIGH CONTRAST SUBTEXT & MUTED OVERRIDES IN LIGHT MODE */
+body:not(.dark-mode) p,
+body.light-mode p {
+    color: #334155;
+}
+
+body:not(.dark-mode) .text-muted,
+body.light-mode .text-muted {
+    color: #475569 !important;
+}
+
+body:not(.dark-mode) a.text-decoration-none,
+body.light-mode a.text-decoration-none {
+    color: #475569 !important;
+}
+
+body.dark-mode .modal-content {
+    background: #190c12 !important;
+    color: #f8fafc !important;
+    border: 1px solid rgba(255, 30, 60, 0.25) !important;
+}
+
+/* FLYWHEEL MODAL & UNIVERSAL CONTRAST SAFEGUARDS */
+.flywheel-detail-box {
+    background-color: #f1f5f9;
+    color: #0f172a;
+    border: 1px solid #cbd5e1;
+}
+
+.flywheel-detail-box p,
+.flywheel-detail-box * {
+    color: #0f172a !important;
+}
+
+body.dark-mode .flywheel-detail-box {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 40, 60, 0.3) !important;
+}
+
+body.dark-mode .flywheel-detail-box p,
+body.dark-mode .flywheel-detail-box * {
+    color: #ffffff !important;
+}
+
+/* UNIVERSAL DARK MODE SHIELD FOR BOOTSTRAP bg-light & text-dark */
+body.dark-mode .bg-light {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    color: #ffffff !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+}
+
+body.dark-mode .bg-light p,
+body.dark-mode .bg-light span,
+body.dark-mode .bg-light div,
+body.dark-mode .bg-light * {
+    color: #ffffff !important;
+}
+
+body.dark-mode .text-dark {
+    color: #ffffff !important;
+}
+
+.profile-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 5px solid #2563eb;
+}

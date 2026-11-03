@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Smart Reminders
+    </title>
+
+    <!-- Bootstrap -->
+
+    <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet">
+
+    <!-- Font Awesome -->
+
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- CSS -->
+
+    <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+
+        .reminder-card {
+
+            background: white;
+
+            border-left: 6px solid #ff9800;
+
+            border-radius: 15px;
+
+            padding: 20px;
+
+            margin-bottom: 20px;
+
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+
+        }
+
+        .reminder-icon {
+
+            font-size: 35px;
+
+            color: #ff9800;
+
+        }
+
+    </style>
+
+</head>
+
+<body class="dashboard-body">
+
+    <!-- SIDEBAR -->
+
+    <div class="sidebar">
+
+        <h2 class="logo">
+            StudyMate AI
+        </h2>
+
+        <ul class="sidebar-menu">
+
+            <li>
+                <a href="/dashboard">
+                    Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="/reminders">
+                    Smart Reminders
+                </a>
+            </li>
+
+            <li>
+                <a href="/logout">
+                    Logout
+                </a>
+            </li>
+
+        </ul>
+
+    </div>
+
+    <!-- MAIN CONTENT -->
+
+    <div class="main-content">
+
+        <!-- TOPBAR -->
+
+        <div class="topbar mb-4">
+
+            <h1>
+                Smart Reminders 🔔
+            </h1>
+
+            <p>
+                Never miss assignments, exams, or deadlines.
+            </p>
+
+        </div>
+
+        <!-- FORM -->
+
+        <div class="card shadow p-4 mb-5">
+
+            <form method="POST">
+
+                <div class="row">
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Reminder Title
+                        </label>
+
+                        <input
+                        type="text"
+                        name="title"
+                        class="form-control"
+                        placeholder="Example: AI Assignment"
+                        required>
+
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Date
+                        </label>
+
+                        <input
+                        type="date"
+                        name="reminder_date"
+                        class="form-control"
+                        required>
+
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+
+                        <label class="form-label">
+                            Time
+                        </label>
+
+                        <input
+                        type="time"
+                        name="reminder_time"
+                        class="form-control"
+                        required>
+
+                    </div>
+
+                </div>
+
+                <button
+                type="submit"
+                class="btn btn-warning text-dark fw-bold px-4">
+
+                    <i class="fa-solid fa-bell"></i>
+
+                    Add Reminder
+
+                </button>
+
+            </form>
+
+        </div>
+
+        <!-- REMINDER CARDS -->
+
+        <h2 class="mb-4">
+            Upcoming Alerts 🚨
+        </h2>
+
+        {% for reminder in reminders %}
+
+        <div class="reminder-card">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <div>
+
+                    <h3>
+                        {{ reminder.title }}
+                    </h3>
+
+                    <p class="mb-1">
+
+                        <b>Date:</b>
+
+                        {{ reminder.reminder_date }}
+
+                    </p>
+
+                    <p>
+
+                        <b>Time:</b>
+
+                        {{ reminder.reminder_time }}
+
+                    </p>
+
+                </div>
+
+                <div>
+
+                    <i class="fa-solid fa-bell reminder-icon"></i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
+</body>
+
+</html>

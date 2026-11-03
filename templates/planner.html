@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Study Planner</title>
+
+    <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet">
+
+    <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body class="dashboard-body">
+
+    <!-- SIDEBAR -->
+
+    <div class="sidebar">
+
+        <h2 class="logo">
+            StudyMate AI
+        </h2>
+
+        <ul class="sidebar-menu">
+
+            <li>
+                <a href="/dashboard">
+                    Dashboard
+                </a>
+            </li>
+
+            <li>
+                <a href="/planner">
+                    Study Planner
+                </a>
+            </li>
+
+            <li>
+                <a href="/logout">
+                    Logout
+                </a>
+            </li>
+
+        </ul>
+
+    </div>
+
+    <!-- MAIN CONTENT -->
+
+    <div class="main-content">
+
+        <div class="topbar mb-4">
+
+            <h1>
+                Study Planner 📅
+            </h1>
+
+        </div>
+
+        <!-- FORM -->
+
+        <div class="card p-4 shadow mb-5">
+
+            <form method="POST">
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Subject
+                    </label>
+
+                    <input
+                    type="text"
+                    name="subject"
+                    class="form-control"
+                    required>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Study Time
+                    </label>
+
+                    <input
+                    type="text"
+                    name="study_time"
+                    class="form-control"
+                    placeholder="Example: 6 PM - 8 PM"
+                    required>
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Exam Date
+                    </label>
+
+                    <input
+                    type="date"
+                    name="exam_date"
+                    class="form-control"
+                    required>
+
+                </div>
+
+                <button
+                type="submit"
+                class="btn btn-primary">
+
+                    Save Plan
+
+                </button>
+
+            </form>
+
+        </div>
+
+        <!-- SAVED PLANS -->
+
+        <div class="card p-4 shadow">
+
+            <h3 class="mb-4">
+                Saved Plans
+            </h3>
+
+            <table class="table table-bordered">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Subject
+                        </th>
+
+                        <th>
+                            Study Time
+                        </th>
+
+                        <th>
+                            Exam Date
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for plan in plans %}
+
+                    <tr>
+
+                        <td>
+                            {{ plan.subject }}
+                        </td>
+
+                        <td>
+                            {{ plan.study_time }}
+                        </td>
+
+                        <td>
+                            {{ plan.exam_date }}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

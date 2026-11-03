@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+    <title>
+        Knowledge Base
+    </title>
+
+    <!-- Bootstrap -->
+
+    <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    rel="stylesheet">
+
+    <!-- Font Awesome -->
+
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- CSS -->
+
+    <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/style.css') }}">
+
+    <style>
+
+        .upload-box {
+
+            border: 2px dashed #0d6efd;
+
+            border-radius: 20px;
+
+            padding: 40px;
+
+            text-align: center;
+
+            background: #f8fbff;
+
+        }
+
+        .material-card {
+
+            border-radius: 15px;
+
+            padding: 20px;
+
+            background: white;
+
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+
+            margin-bottom: 20px;
+
+        }
+
+        .file-icon {
+
+            font-size: 45px;
+
+            color: #0d6efd;
+
+        }
+
+        .badge {
+
+            font-size: 14px;
+
+            padding: 8px 14px;
+
+        }
+
+    </style>
+
+</head>
+
+<body class="dashboard-body">
+
+    <!-- SIDEBAR -->
+
+    <div class="sidebar">
+
+        <h2 class="logo">
+            StudyMate AI
+        </h2>
+
+        <ul class="sidebar-menu">
+
+            <li>
+
+                <a href="/dashboard">
+
+                    Dashboard
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="/notes">
+
+                    Knowledge Base
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="/logout">
+
+                    Logout
+
+                </a>
+
+            </li>
+
+        </ul>
+
+    </div>
+
+    <!-- MAIN CONTENT -->
+
+    <div class="main-content">
+
+        <!-- TOPBAR -->
+
+        <div class="topbar mb-4">
+
+            <h1>
+                Knowledge Base 📚
+            </h1>
+
+            <p>
+                Upload PDFs, assignments, notes, PPTs, and study materials.
+            </p>
+
+        </div>
+
+        <!-- UPLOAD SECTION -->
+
+        <div class="card shadow p-5 mb-5">
+
+            <form
+            method="POST"
+            enctype="multipart/form-data">
+
+                <!-- UPLOAD BOX -->
+
+                <div class="upload-box mb-4">
+
+                    <i class="fa-solid fa-cloud-arrow-up fa-4x text-primary mb-3"></i>
+
+                    <h3>
+                        Upload Study Material
+                    </h3>
+
+                    <p>
+                        Store academic resources securely.
+                    </p>
+
+                </div>
+
+                <!-- MATERIAL TYPE -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Material Type
+                    </label>
+
+                    <select
+                    name="type"
+                    class="form-control"
+                    required>
+
+                        <option value="">
+                            Choose Material
+                        </option>
+
+                        <option value="Word Document">
+                            📄 Word Document (.doc/.docx)
+                        </option>
+
+                        <option value="PDF">
+                            📕 PDF File (.pdf)
+                        </option>
+
+                        <option value="Presentation">
+                            📊 PowerPoint Presentation (.ppt/.pptx)
+                        </option>
+
+                        <option value="Excel">
+                            📗 Excel Sheet (.xls/.xlsx)
+                        </option>
+
+                        <option value="Assignment">
+                            📝 Assignment Submission
+                        </option>
+
+                        <option value="Notes">
+                            📚 Study Notes
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <!-- TITLE -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Title
+                    </label>
+
+                    <input
+                    type="text"
+                    name="title"
+                    class="form-control"
+                    placeholder="Enter material title"
+                    required>
+
+                </div>
+
+                <!-- DESCRIPTION -->
+
+                <div class="mb-3">
+
+                    <label class="form-label">
+                        Description
+                    </label>
+
+                    <textarea
+                    name="content"
+                    rows="5"
+                    class="form-control"
+                    placeholder="Enter description..."
+                    required></textarea>
+
+                </div>
+
+                <!-- FILE -->
+
+                <div class="mb-4">
+
+                    <label class="form-label">
+                        Upload File
+                    </label>
+
+                    <input
+                    type="file"
+                    name="file"
+                    class="form-control">
+
+                </div>
+
+                <!-- BUTTON -->
+
+                <button
+                type="submit"
+                class="btn btn-primary px-5">
+
+                    <i class="fa-solid fa-upload"></i>
+
+                    Upload Material
+
+                </button>
+
+            </form>
+
+        </div>
+
+        <!-- MATERIALS SECTION -->
+
+        <h2 class="mb-4">
+            Uploaded Materials 📂
+        </h2>
+
+        {% for note in notes %}
+
+        <div class="material-card">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <div>
+
+                    <h3>
+                        {{ note.title }}
+                    </h3>
+
+                    <span class="badge bg-primary">
+
+                        {{ note.type }}
+
+                    </span>
+
+                </div>
+
+                <div>
+
+                    <i class="fa-solid fa-file-lines file-icon"></i>
+
+                </div>
+
+            </div>
+
+            <hr>
+
+            <p>
+                {{ note.content }}
+            </p>
+
+            {% if note.file_name %}
+
+            <a
+            href="{{ url_for('static', filename='uploads/' + note.file_name) }}"
+            target="_blank"
+            class="btn btn-outline-primary">
+
+                <i class="fa-solid fa-eye"></i>
+
+                View File
+
+            </a>
+
+            {% endif %}
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</body>
+
+</html>
