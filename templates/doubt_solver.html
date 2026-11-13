@@ -42,7 +42,7 @@
 
         .result-box {
 
-            white-space: normal;
+            white-space: pre-wrap;
 
             overflow-wrap: break-word;
 
@@ -83,42 +83,46 @@
     <div class="main-card">
 
         <!-- TITLE -->
-
-        <h1 class="fw-bold">
-            AI Doubt Solver 📸🧠
-        </h1>
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h1 class="fw-bold mb-0">
+                AI Doubt Solver 📸🧠
+            </h1>
+            <a href="/dashboard" class="btn btn-outline-secondary">← Back to Dashboard</a>
+        </div>
 
         <p class="text-muted mt-2">
-
-            Upload question images and get instant AI answers.
-
+            Upload question images or type your question to get instant, step-by-step AI solutions.
         </p>
 
         <!-- FORM -->
+        <form method="POST" enctype="multipart/form-data" class="mt-4">
 
-        <form
-        method="POST"
-        enctype="multipart/form-data">
-
-            <label class="form-label mt-4 fw-semibold">
-
-                Upload Question Image
-
+            <label class="form-label fw-semibold">
+                📷 Upload Question Image (OCR)
             </label>
-
             <input
-            type="file"
-            name="image"
-            class="form-control form-control-lg"
-            accept="image/*"
-            required>
+                type="file"
+                name="image"
+                id="imageInput"
+                class="form-control form-control-lg"
+                accept="image/*">
+
+            <div class="my-3 text-center text-muted fw-bold">─── OR ───</div>
+
+            <label class="form-label fw-semibold">
+                ✍️ Type or Paste Question Text
+            </label>
+            <textarea
+                name="question_text"
+                id="questionTextInput"
+                class="form-control"
+                rows="3"
+                placeholder="Type your question or academic doubt here..."></textarea>
 
             <button
-            type="submit"
-            class="btn btn-primary mt-4 solve-btn">
-
-                Solve Question
-
+                type="submit"
+                class="btn btn-primary mt-4 solve-btn">
+                ⚡ Solve Question
             </button>
 
         </form>

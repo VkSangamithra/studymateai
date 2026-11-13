@@ -619,43 +619,41 @@ Available Study Hours:
 # AI DOUBT SOLVER
 @app.route('/doubt-solver', methods=['GET', 'POST'])
 def doubt_solver():
-
     extracted_text = None
-
     ai_answer = None
 
     if request.method == 'POST':
+        question_text = request.form.get('question_text', '').strip()
+        image = request.files.get('image')
 
-        image = request.files['image']
+        if image and image.filename != '':
+            image_path = os.path.join('static/uploads', image.filename)
+            image.save(image_path)
+            try:
+                extracted_text = extract_text(image_path).strip()
+            except Exception as e:
+                extracted_text = f"Could not read image: {e}"
 
-        image_path = os.path.join(
+        query = question_text or extracted_text
 
-            'static/uploads',
+        if query:
+            prompt = f"""You are an elite academic tutor and doubt solver.
+Please solve and explain the following question step-by-step with clear explanations, formulas, and final answers:
 
-            image.filename
-
-        )
-
-        image.save(image_path)
-
-        extracted_text = extract_text(image_path)
-
-        prompt = f"""
-Answer this academic question clearly:
-
-{extracted_text}
+{query}
 """
-
-        ai_answer = chatbot_response(prompt)
+            try:
+                ai_answer = chatbot_response(prompt)
+            except Exception as e:
+                ai_answer = f"Error generating answer: {e}"
+        else:
+            extracted_text = "No question was detected or entered."
+            ai_answer = "Please upload an image of your question or type your question in the text box."
 
     return render_template(
-
         'doubt_solver.html',
-
         extracted_text=extracted_text,
-
         ai_answer=ai_answer
-
     )
 
 

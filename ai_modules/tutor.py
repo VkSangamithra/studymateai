@@ -7,7 +7,20 @@ load_dotenv()
 
 API_KEY = os.getenv("OPENROUTER_API_KEY", "")
 
+MODELS = [
+    "nvidia/nemotron-3.5-lightning:free",
+    "liquid/lfm-2.5-2.6b:free",
+    "baidu/ernie-5.5-flash-preview:free",
+    "google/gemma-4-26b-a4b-it:free",
+    "thinkingmachines/inkling-2-small:free"
+]
+
 def explain_difficult_topic(topic, level="intermediate"):
+    global API_KEY
+    if not API_KEY:
+        load_dotenv(override=True)
+        API_KEY = os.getenv("OPENROUTER_API_KEY", "")
+
     prompt = f"""You are an elite, patient AI Tutor specializing in explaining difficult topics clearly.
 Explain the following topic for a {level} student:
 Topic: '{topic}'
@@ -21,23 +34,29 @@ Format your explanation in structured HTML with these sections:
 
 Keep the formatting clean, elegant, and directly usable inside a web card. Do not include markdown code block backticks."""
 
-    try:
-        url = "https://openrouter.ai/api/v1/chat/completions"
-        headers = {
-            "Authorization": f"Bearer {API_KEY}",
-            "Content-Type": "application/json"
-        }
-        data = {
-            "model": "openai/gpt-3.5-turbo",
-            "messages": [{"role": "user", "content": prompt}],
-            "temperature": 0.7
-        }
-        response = requests.post(url, headers=headers, json=data, timeout=12)
-        if response.status_code == 200:
-            result = response.json()
-            return result['choices'][0]['message']['content']
-    except Exception as e:
-        print("Tutor API error:", e)
+    url = "https://openrouter.ai/api/v1/chat/completions"
+    headers = {
+        "Authorization": f"Bearer {API_KEY}",
+        "Content-Type": "application/json"
+    }
+
+    for model in MODELS:
+        try:
+            data = {
+                "model": model,
+                "messages": [{"role": "user", "content": prompt}],
+                "temperature": 0.7
+            }
+            response = requests.post(url, headers=headers, json=data, timeout=15)
+            if response.status_code == 200:
+                result = response.json()
+                if "choices" in result and len(result["choices"]) > 0:
+                    content = result["choices"][0].get("message", {})["content"]
+                    if content and content.strip():
+                        return content.strip()
+        except Exception as e:
+            print(f"[tutor] Model {model} error:", e)
+            continue
 
     # High-quality fallback explanation if API fails or offline
     return f"""
